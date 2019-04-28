@@ -13,6 +13,8 @@ import java.io.Serializable;
  **/
 public class UserListDto implements Serializable {
 
+    @ApiModelProperty("账号id")
+    private Long userId;
     @ApiModelProperty("登录账号名称")
     private String username;
     @ApiModelProperty("账户类型 1=超级管理员  2=普通用户")
@@ -21,9 +23,18 @@ public class UserListDto implements Serializable {
     private Integer state;
 
     public UserListDto(User user) {
+        this.userId = user.getId();
         this.username = user.getName();
         this.type = user.getType();
         this.state = user.getState();
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getUsername() {
@@ -53,7 +64,8 @@ public class UserListDto implements Serializable {
     @Override
     public String toString() {
         return "UserListDto{" +
-                "username='" + username + '\'' +
+                "userId=" + userId +
+                ", username='" + username + '\'' +
                 ", type=" + type +
                 ", state=" + state +
                 '}';

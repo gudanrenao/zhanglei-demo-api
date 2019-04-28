@@ -1,5 +1,8 @@
 package com.zhangwenit.zhanglei.demo.api.service;
 
+import com.zhangwenit.zhanglei.demo.api.constant.StateConstant;
+import com.zhangwenit.zhanglei.demo.api.enums.CommonExceptionEnum;
+import com.zhangwenit.zhanglei.demo.api.exception.CommonException;
 import com.zhangwenit.zhanglei.demo.api.model.User;
 import com.zhangwenit.zhanglei.demo.api.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -28,7 +31,55 @@ public class UserService {
         return userRepository.findByName(name);
     }
 
-    public List<User> findAllUser(){
+    public List<User> findAllUser() {
         return userRepository.findAll();
+    }
+
+    public User findById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new CommonException("userId not found"));
+    }
+
+    /**
+     * 冻结账户
+     *
+     * @param user   当前登录账号
+     * @param userId 被冻结账户id
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void freeze(User user, Long userId) {
+        if (user.getType() != StateConstant.USER_TYPE_MANAGER) {
+            throw new CommonException(CommonExceptionEnum.PERMISSION_DENIED);
+        }
+        User freezeUser = findById(userId);
+        if (freezeUser.getType() == StateConstant.USER_TYPE_MANAGER) {
+            throw new CommonException("user can not system manager");
+        }
+        if (freezeUser.getState() != StateConstant.USER_STATE_ACTIVE) {
+            throw new CommonException("user state error");
+        }
+        freezeUser.setState(StateConstant.USER_STATE_FREEZE);
+        userRepository.save(freezeUser);
+    }
+
+    /**
+     * 激活账户
+     *
+     * @param user   当前登录账号
+     * @param userId 待激活账户id
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void active(User user, Long userId) {
+        if (user.getType() != StateConstant.USER_TYPE_MANAGER) {
+            throw new CommonException(CommonExceptionEnum.PERMISSION_DENIED);
+        }
+        User activeUser = findById(userId);
+        if (activeUser.getType() == StateConstant.USER_TYPE_MANAGER) {
+            throw new CommonException("user can not system manager");
+        }
+        if (activeUser.getState() != StateConstant.USER_STATE_FREEZE) {
+            throw new CommonException("user state error");
+        }
+        activeUser.setState(StateConstant.USER_STATE_ACTIVE);
+        userRepository.save(activeUser);
     }
 }
