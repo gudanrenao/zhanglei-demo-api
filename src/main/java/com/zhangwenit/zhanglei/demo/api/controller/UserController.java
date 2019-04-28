@@ -1,16 +1,12 @@
 package com.zhangwenit.zhanglei.demo.api.controller;
 
-import com.zhangwenit.zhanglei.demo.api.dto.LoginResponse;
 import com.zhangwenit.zhanglei.demo.api.dto.ResponseVO;
 import com.zhangwenit.zhanglei.demo.api.dto.UserListDto;
 import com.zhangwenit.zhanglei.demo.api.enums.CommonExceptionEnum;
 import com.zhangwenit.zhanglei.demo.api.exception.CommonException;
 import com.zhangwenit.zhanglei.demo.api.model.User;
 import com.zhangwenit.zhanglei.demo.api.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -34,7 +30,7 @@ public class UserController {
     }
 
     @ApiOperation(value = "获取账户列表", notes = "获取账户列表")
-    @ApiResponse(code = 0, message = "", response = UserListDto.class)
+    @ApiResponses(@ApiResponse(code = 0, message = "", response = UserListDto.class))
     @PostMapping("/list")
     public ResponseVO list(@ApiIgnore @RequestAttribute User user, @RequestHeader String token) {
         if (user.getType() != 1) {

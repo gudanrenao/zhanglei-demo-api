@@ -52,7 +52,7 @@ public class UserService {
         }
         User freezeUser = findById(userId);
         if (freezeUser.getType() == StateConstant.USER_TYPE_MANAGER) {
-            throw new CommonException("user can not system manager");
+            throw new CommonException(CommonExceptionEnum.MANAGE_USER_EDIT_ERROR);
         }
         if (freezeUser.getState() != StateConstant.USER_STATE_ACTIVE) {
             throw new CommonException("user state error");
@@ -74,7 +74,7 @@ public class UserService {
         }
         User activeUser = findById(userId);
         if (activeUser.getType() == StateConstant.USER_TYPE_MANAGER) {
-            throw new CommonException("user can not system manager");
+            throw new CommonException(CommonExceptionEnum.MANAGE_USER_EDIT_ERROR);
         }
         if (activeUser.getState() != StateConstant.USER_STATE_FREEZE) {
             throw new CommonException("user state error");

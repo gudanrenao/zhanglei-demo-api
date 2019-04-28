@@ -12,6 +12,7 @@ import java.util.HashSet;
 public enum CommonExceptionEnum {
 
     PERMISSION_DENIED(10001,"账户无权限(需要使用管理员账户)"),
+    MANAGE_USER_EDIT_ERROR(10002,"管理员账户状态不可修改"),
 
     SUCCESS(0, "SUCCESS"),
     DATABASE_OPERATION_EXCEPTION(1001, "数据库操作失败"),

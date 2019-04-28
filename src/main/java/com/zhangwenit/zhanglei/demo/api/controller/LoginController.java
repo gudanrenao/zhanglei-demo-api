@@ -9,6 +9,7 @@ import com.zhangwenit.zhanglei.demo.api.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class LoginController {
     }
 
     @ApiOperation(value = "登录", notes = "登录")
-    @ApiResponse(code = 0, message = "", response = LoginResponse.class)
+    @ApiResponses(@ApiResponse(code = 0, message = "", response = LoginResponse.class))
     @PostMapping("/loginIn")
     public ResponseVO loginIn(@RequestBody LoginDto loginDto) {
         if (StringUtils.isEmpty(loginDto.getUsername()) || StringUtils.isEmpty(loginDto.getPassword())) {
