@@ -10,9 +10,9 @@ import io.swagger.annotations.ApiModelProperty;
  **/
 public class LoginDto {
 
-    @ApiModelProperty("登录账号名称")
+    @ApiModelProperty(value = "登录账号名称",example = "zhanglei")
     private String username;
-    @ApiModelProperty("登录账号密码")
+    @ApiModelProperty(value = "登录账号密码",example = "123456")
     private String password;
 
     public String getUsername() {
