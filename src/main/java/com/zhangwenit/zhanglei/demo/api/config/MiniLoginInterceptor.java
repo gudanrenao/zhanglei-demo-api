@@ -1,6 +1,6 @@
 package com.zhangwenit.zhanglei.demo.api.config;
 
-import com.zhangwenit.zhanglei.demo.api.model.User;
+import com.zhangwenit.zhanglei.demo.api.model.ThirdUser;
 import com.zhangwenit.zhanglei.demo.api.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,19 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * pc后台拦截器
+ * 小程序拦截器
  * @author zhangwen
  */
 @Configuration
-public class LoginInterceptor implements HandlerInterceptor {
+public class MiniLoginInterceptor implements HandlerInterceptor {
 
     private final RedisService redisService;
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginInterceptor.class);
+    private static final Logger logger = LoggerFactory.getLogger(MiniLoginInterceptor.class);
 
     private static final String REQUEST_OPTIONS = "OPTIONS";
 
-    public LoginInterceptor(RedisService redisService) {
+    public MiniLoginInterceptor(RedisService redisService) {
         this.redisService = redisService;
     }
 
@@ -35,18 +35,18 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         String token = request.getHeader("token");
         if (token == null || "".equals(token)) {
-            logger.info("token is null");
+            logger.info("mini token is null");
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
-        User user = redisService.findByToken(token);
+        ThirdUser user = redisService.findByMiniToken(token);
         if (user == null) {
-            logger.info("token is expired : {}", token);
+            logger.info("mini token is expired : {}", token);
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
         //将token重新做过期时间处理
-        redisService.reExpireToken(token);
+        redisService.reExpireMiniToken(token);
         request.setAttribute("user", user);
         return true;
     }

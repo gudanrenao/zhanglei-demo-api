@@ -2,6 +2,7 @@ package com.zhangwenit.zhanglei.demo.api.service;
 
 import com.alibaba.fastjson.JSON;
 import com.zhangwenit.zhanglei.demo.api.config.RedisConfig;
+import com.zhangwenit.zhanglei.demo.api.model.ThirdUser;
 import com.zhangwenit.zhanglei.demo.api.model.User;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -20,6 +21,9 @@ public class RedisService {
 
     private final RedisTemplate<String, String> redisTemplate;
 
+    private static final String LOGIN_KEY_PREFIX = "login:";
+    private static final String MINI_LOGIN_KEY_PREFIX = "miniLogin:";
+
     public RedisService(RedisTemplate<String, String> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
@@ -31,9 +35,20 @@ public class RedisService {
      * @return head token
      */
     public String setLoginInfo(User user) {
-        String redisKey = "login:" + System.currentTimeMillis();
-        String value = JSON.toJSONString(user);
-        redisTemplate.opsForValue().set(redisKey, value, RedisConfig.LOGIN_EXPIRE_SECOND, TimeUnit.SECONDS);
+        String redisKey = LOGIN_KEY_PREFIX + System.currentTimeMillis();
+        redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(user), RedisConfig.LOGIN_EXPIRE_SECOND, TimeUnit.SECONDS);
+        return redisKey;
+    }
+
+    /**
+     * 小程序登录成功保存到redis
+     *
+     * @param user
+     * @return head token
+     */
+    public String setMiniLoginInfo(ThirdUser user) {
+        String redisKey = MINI_LOGIN_KEY_PREFIX + System.currentTimeMillis();
+        redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(user), RedisConfig.MINI_LOGIN_EXPIRE_SECOND, TimeUnit.SECONDS);
         return redisKey;
     }
 
@@ -52,6 +67,20 @@ public class RedisService {
     }
 
     /**
+     * 获取小程序token
+     *
+     * @param token
+     * @return
+     */
+    public ThirdUser findByMiniToken(final String token) {
+        String value = redisTemplate.opsForValue().get(token);
+        if (StringUtils.isEmpty(value)) {
+            return null;
+        }
+        return JSON.parseObject(value, ThirdUser.class);
+    }
+
+    /**
      * 删除token
      *
      * @param token
@@ -61,7 +90,11 @@ public class RedisService {
         return redisTemplate.delete(token);
     }
 
-    public void reExpireToken(String token){
-        redisTemplate.expire(token,RedisConfig.LOGIN_EXPIRE_SECOND, TimeUnit.SECONDS);
+    public void reExpireToken(String token) {
+        redisTemplate.expire(token, RedisConfig.LOGIN_EXPIRE_SECOND, TimeUnit.SECONDS);
+    }
+
+    public void reExpireMiniToken(String token) {
+        redisTemplate.expire(token, RedisConfig.MINI_LOGIN_EXPIRE_SECOND, TimeUnit.SECONDS);
     }
 }

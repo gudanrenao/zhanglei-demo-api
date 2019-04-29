@@ -21,6 +21,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     @Lazy
     private LoginInterceptor loginInterceptor;
+    @Autowired
+    @Lazy
+    private MiniLoginInterceptor miniLoginInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -29,7 +32,8 @@ public class WebConfig implements WebMvcConfigurer {
                 //不拦截登录相关接口(需要拦截退出登录和第一次登录修改密码)
                 .excludePathPatterns("/api/login/**")
                 .excludePathPatterns("/api/register/**")
-        .excludePathPatterns();
+                .excludePathPatterns();
+        registry.addInterceptor(miniLoginInterceptor).addPathPatterns("/api-mini/**").excludePathPatterns();
     }
 
     @Override
@@ -43,7 +47,7 @@ public class WebConfig implements WebMvcConfigurer {
                 //设置允许的方法
                 .allowedMethods("*")
                 //允许前端拿到的headers
-                .exposedHeaders("Authorization","Access-Control-Allow-Origin")
+                .exposedHeaders("Authorization", "Access-Control-Allow-Origin")
                 //跨域允许时间
                 .maxAge(3600);
     }

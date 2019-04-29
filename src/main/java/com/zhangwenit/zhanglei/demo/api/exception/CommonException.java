@@ -35,16 +35,15 @@ public class CommonException extends RuntimeException {
         return this.commonExceptionEnum == null ? ResultCode.FAILED.getIndex() : this.commonExceptionEnum.value;
     }
 
+    @Override
     public String getMessage() {
         if (this.commonExceptionEnum == null) {
             return this.getMsg();
         } else {
-            StringBuilder exMessage = new StringBuilder();
-            exMessage.append("code: ");
-            exMessage.append(this.commonExceptionEnum.value);
-            exMessage.append("; message: ");
-            exMessage.append(this.getMsg());
-            return exMessage.toString();
+            return "code: " +
+                    this.commonExceptionEnum.value +
+                    "; message: " +
+                    this.getMsg();
         }
     }
 

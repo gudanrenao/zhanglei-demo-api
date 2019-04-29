@@ -13,14 +13,16 @@ import java.io.Serializable;
  **/
 public class UserListDto implements Serializable {
 
-    @ApiModelProperty("账号id")
+    @ApiModelProperty(value = "账号id",example = "1")
     private Long userId;
     @ApiModelProperty("登录账号名称")
     private String username;
-    @ApiModelProperty("账户类型 1=超级管理员  2=普通用户")
+    @ApiModelProperty(value = "账户类型 1=超级管理员  2=普通用户",dataType = "int",example = "1")
     private Integer type;
-    @ApiModelProperty("账户状态 1=正常  2=已冻结")
+    @ApiModelProperty(value = "账户状态 1=正常  2=已冻结",dataType = "int",example = "1")
     private Integer state;
+
+    private static final long serialVersionUID = 1L;
 
     public UserListDto(User user) {
         this.userId = user.getId();

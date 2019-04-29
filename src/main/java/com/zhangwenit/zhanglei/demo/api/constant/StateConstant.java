@@ -28,4 +28,24 @@ public interface StateConstant {
      * 普通账户
      */
     int USER_TYPE_ORDINARY = 2;
+
+    ////*********************饭店状态**********************
+    /**
+     * 删除
+     */
+    int RESTAURANT_STATE_FREEZE = 2;
+    /**
+     * 正常
+     */
+    int RESTAURANT_STATE_ACTIVE = 1;
+
+    ////*********************小程序用户状态**********************
+    /**
+     * 删除
+     */
+    int THIRD_USER_STATUS_FREEZE = 2;
+    /**
+     * 正常
+     */
+    int THIRD_USER_STATUS_ACTIVE = 1;
 }

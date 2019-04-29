@@ -1,8 +1,11 @@
 package com.zhangwenit.zhanglei.demo.api.controller;
 
+import com.zhangwenit.zhanglei.demo.api.constant.StateConstant;
 import com.zhangwenit.zhanglei.demo.api.dto.LoginDto;
 import com.zhangwenit.zhanglei.demo.api.dto.LoginResponse;
 import com.zhangwenit.zhanglei.demo.api.dto.ResponseVO;
+import com.zhangwenit.zhanglei.demo.api.enums.CommonExceptionEnum;
+import com.zhangwenit.zhanglei.demo.api.exception.CommonException;
 import com.zhangwenit.zhanglei.demo.api.model.User;
 import com.zhangwenit.zhanglei.demo.api.service.RedisService;
 import com.zhangwenit.zhanglei.demo.api.service.UserService;
@@ -22,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
  **/
 @RestController
 @RequestMapping("/api/login")
-@Api(tags = "登录相关接口")
+@Api(tags = "PC端登录相关接口")
 public class LoginController {
 
     private final UserService userService;
@@ -38,17 +41,17 @@ public class LoginController {
     @PostMapping("/loginIn")
     public ResponseVO loginIn(@RequestBody LoginDto loginDto) {
         if (StringUtils.isEmpty(loginDto.getUsername()) || StringUtils.isEmpty(loginDto.getPassword())) {
-            return ResponseVO.buildError(1001, "登录名或密码为空");
+            throw new CommonException(CommonExceptionEnum.NAMNE_OR_PWD_ERROR);
         }
         User user = userService.findByName(loginDto.getUsername());
         if (user == null) {
-            return ResponseVO.buildError(1001, "登录名或密码错误");
+            throw new CommonException(CommonExceptionEnum.NAMNE_OR_PWD_ERROR);
         }
-        if (user.getState() == 2) {
-            return ResponseVO.buildError(1001, "账户以被冻结");
+        if (user.getState() == StateConstant.USER_STATE_FREEZE) {
+            throw new CommonException(CommonExceptionEnum.USER_FREEZE);
         }
         if (!DigestUtils.md5DigestAsHex(loginDto.getPassword().getBytes()).equals(user.getPassword())) {
-            return ResponseVO.buildError(1001, "登录名或密码错误");
+            throw new CommonException(CommonExceptionEnum.NAMNE_OR_PWD_ERROR);
         }
         //登录成功，将登录信息保存到redis
         String token = redisService.setLoginInfo(user);

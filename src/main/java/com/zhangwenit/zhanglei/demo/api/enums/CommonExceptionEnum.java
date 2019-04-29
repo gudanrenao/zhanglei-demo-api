@@ -13,6 +13,9 @@ public enum CommonExceptionEnum {
 
     PERMISSION_DENIED(10001,"账户无权限(需要使用管理员账户)"),
     MANAGE_USER_EDIT_ERROR(10002,"管理员账户状态不可修改"),
+    USER_FREEZE(10003,"账户被冻结，无法登陆"),
+    NAMNE_OR_PWD_ERROR(10004,"登录名或密码错误"),
+    LOGIN_CODE_NULL_ERROR(10005,"code不能为空"),
 
     SUCCESS(0, "SUCCESS"),
     DATABASE_OPERATION_EXCEPTION(1001, "数据库操作失败"),

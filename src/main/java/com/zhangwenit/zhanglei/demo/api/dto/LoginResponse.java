@@ -14,10 +14,12 @@ public class LoginResponse implements Serializable {
 
     @ApiModelProperty("登录账号名称")
     private String username;
-    @ApiModelProperty("账户类型 1=超级管理员  2=普通用户")
+    @ApiModelProperty(value = "账户类型 1=超级管理员  2=普通用户",dataType = "int",example = "1")
     private Integer type;
     @ApiModelProperty("token,需要登录后的其他请求放在head中，key为token")
     private String token;
+
+    private static final long serialVersionUID = 1L;
 
     public LoginResponse(String username, Integer type, String token) {
         this.username = username;

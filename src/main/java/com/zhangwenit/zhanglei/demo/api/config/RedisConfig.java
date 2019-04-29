@@ -33,9 +33,13 @@ import java.util.Set;
 public class RedisConfig extends CachingConfigurerSupport {
 
     /**
-     * 登录后过期时间
+     * pc登录后过期时间 1小时
      */
     public static final long LOGIN_EXPIRE_SECOND = 3600;
+    /**
+     * 小程序登录后过期时间 7天
+     */
+    public static final long MINI_LOGIN_EXPIRE_SECOND = 7 * 24 * 3600;
 
     /**
      * 定义缓存数据 key 生成策略的bean
