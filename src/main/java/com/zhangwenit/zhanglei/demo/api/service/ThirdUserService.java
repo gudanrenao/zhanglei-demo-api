@@ -18,8 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import org.springframework.web.client.RestTemplate;
-import sun.misc.BASE64Decoder;
 
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,10 +66,10 @@ public class ThirdUserService {
         if (response == null || response.getErrCode() != 0) {
             throw new CommonException(response != null ? response.getErrMsg() : "code无效");
         }
-        BASE64Decoder decoder = new BASE64Decoder();
-        byte[] value = decoder.decodeBuffer(wxUser.getEncryptedData());
-        byte[] key = decoder.decodeBuffer(response.getSessionKey());
-        byte[] iv = decoder.decodeBuffer(wxUser.getIv());
+        Base64.Decoder decoder = Base64.getDecoder();
+        byte[] value = decoder.decode(wxUser.getEncryptedData());
+        byte[] key = decoder.decode(response.getSessionKey());
+        byte[] iv = decoder.decode(wxUser.getIv());
         String wxInfo = CryptoUtil.decrypt(value, key, iv, "utf-8");
         if (StringUtils.isNotEmpty(wxInfo)) {
             JSONObject jsonObject = JSON.parseObject(wxInfo);
