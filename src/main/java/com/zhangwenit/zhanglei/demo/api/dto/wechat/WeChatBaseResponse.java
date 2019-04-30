@@ -1,6 +1,8 @@
-package com.zhangwenit.zhanglei.demo.api.dto;
+package com.zhangwenit.zhanglei.demo.api.dto.wechat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.Serializable;
 
 /**
  * @Description
@@ -8,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @Date 2019/4/29 11:29 PM
  * @Version 1.0
  **/
-public class WeChatBaseResponse {
+public class WeChatBaseResponse implements Serializable {
 
     @JsonProperty(value = "errcode", defaultValue = "0")
     private int errCode;

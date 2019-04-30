@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Version 1.0
  **/
 @RestController
-@RequestMapping("/api-mini/user")
+@RequestMapping("/user")
 @Api(tags = "小程序用户相关接口")
 public class ThirdUserController {
 
@@ -32,7 +32,7 @@ public class ThirdUserController {
 
     @ApiOperation(value = "小程序登录", notes = "小程序登录")
     @ApiResponses(@ApiResponse(code = 0, message = "", response = ThirdUserDto.class))
-    @PostMapping("/login")
+    @PostMapping("/api-mini/login")
     public ResponseVO loginWx(@RequestBody MiniLoginUser user) throws Exception {
         return ResponseVO.buildSuccess(thirdUserService.login(user));
     }

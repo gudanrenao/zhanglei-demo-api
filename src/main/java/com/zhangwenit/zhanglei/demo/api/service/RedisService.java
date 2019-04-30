@@ -2,6 +2,7 @@ package com.zhangwenit.zhanglei.demo.api.service;
 
 import com.alibaba.fastjson.JSON;
 import com.zhangwenit.zhanglei.demo.api.config.RedisConfig;
+import com.zhangwenit.zhanglei.demo.api.constant.WeChatConstant;
 import com.zhangwenit.zhanglei.demo.api.model.ThirdUser;
 import com.zhangwenit.zhanglei.demo.api.model.User;
 import org.apache.commons.lang3.StringUtils;
@@ -96,5 +97,22 @@ public class RedisService {
 
     public void reExpireMiniToken(String token) {
         redisTemplate.expire(token, RedisConfig.MINI_LOGIN_EXPIRE_SECOND, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 保存MiniAccessToken,并设置两个小时的过期时间
+     *
+     * @param accessToken
+     */
+    public void setAndExpireMiniAccessToken(String accessToken) {
+        redisTemplate.opsForValue().set(WeChatConstant.MINI_ACCESS_TOKEN_REDIS_KEY, accessToken);
+        redisTemplate.expire(WeChatConstant.MINI_ACCESS_TOKEN_REDIS_KEY, WeChatConstant.MINI_ACCESS_TOKEN_REDIS_EXPIRE_SECOND, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 获取MiniAccessToken
+     */
+    public String getMiniAccessToken() {
+        return redisTemplate.opsForValue().get(WeChatConstant.MINI_ACCESS_TOKEN_REDIS_KEY);
     }
 }

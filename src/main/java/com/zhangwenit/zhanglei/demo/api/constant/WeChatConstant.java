@@ -8,10 +8,11 @@ package com.zhangwenit.zhanglei.demo.api.constant;
  **/
 public interface WeChatConstant {
 
-    /**
-     * 接口授权类型
-     */
-    String GRANT_TYPE = "authorization_code";
+    String MINI_ACCESS_TOKEN_REDIS_KEY = "mini:accessToken";
+    int MINI_ACCESS_TOKEN_REDIS_EXPIRE_SECOND = 120 * 60;
 
-    String CODE_2_SESSION_URL = "https://api.weixin.qq.com/sns/jscode2sessio";
+    String URL_PREFIX = "https://api.weixin.qq.com/";
+
+    String CODE_2_SESSION_URL = URL_PREFIX + "sns/jscode2sessio?grant_type=authorization_code&appid={appId}&secret={secret}&js_code={code}";
+    String MINI_ACCESS_TOKEN_URL = URL_PREFIX + "cgi-bin/token?grant_type=client_credential&appid={appId}&secret={secret}";
 }

@@ -3,26 +3,23 @@ package com.zhangwenit.zhanglei.demo.api.service;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.zhangwenit.zhanglei.demo.api.constant.StateConstant;
-import com.zhangwenit.zhanglei.demo.api.constant.WeChatConstant;
-import com.zhangwenit.zhanglei.demo.api.dto.CodeToSessionResponse;
 import com.zhangwenit.zhanglei.demo.api.dto.MiniLoginUser;
 import com.zhangwenit.zhanglei.demo.api.dto.ThirdUserDto;
+import com.zhangwenit.zhanglei.demo.api.dto.wechat.CodeToSessionResponse;
 import com.zhangwenit.zhanglei.demo.api.enums.CommonExceptionEnum;
 import com.zhangwenit.zhanglei.demo.api.exception.CommonException;
 import com.zhangwenit.zhanglei.demo.api.model.ThirdUser;
 import com.zhangwenit.zhanglei.demo.api.repository.ThirdUserRepository;
 import com.zhangwenit.zhanglei.demo.api.util.CryptoUtil;
+import com.zhangwenit.zhanglei.demo.api.util.WeChatRestApi;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * @Description
@@ -40,12 +37,12 @@ public class ThirdUserService {
 
     private final ThirdUserRepository thirdUserRepository;
     private final RedisService redisService;
-    private final RestTemplate restTemplate;
+    private final WeChatRestApi weChatRestApi;
 
-    public ThirdUserService(ThirdUserRepository thirdUserRepository, RedisService redisService, RestTemplate restTemplate) {
+    public ThirdUserService(ThirdUserRepository thirdUserRepository, RedisService redisService, WeChatRestApi weChatRestApi) {
         this.thirdUserRepository = thirdUserRepository;
         this.redisService = redisService;
-        this.restTemplate = restTemplate;
+        this.weChatRestApi = weChatRestApi;
     }
 
     /**
@@ -57,15 +54,7 @@ public class ThirdUserService {
     @Transactional(rollbackFor = RuntimeException.class)
     public ThirdUserDto login(MiniLoginUser wxUser) throws Exception {
         Assert.notNull(wxUser.getCode(), CommonExceptionEnum.LOGIN_CODE_NULL_ERROR.desc);
-        Map<String, Object> requestMap = new HashMap<>(4);
-        requestMap.put("appid", appId);
-        requestMap.put("secret", secret);
-        requestMap.put("js_code", wxUser.getCode());
-        requestMap.put("grant_type", WeChatConstant.GRANT_TYPE);
-        CodeToSessionResponse response = restTemplate.getForObject(WeChatConstant.CODE_2_SESSION_URL, CodeToSessionResponse.class, requestMap);
-        if (response == null || response.getErrCode() != 0) {
-            throw new CommonException(response != null ? response.getErrMsg() : "code无效");
-        }
+        CodeToSessionResponse response = weChatRestApi.miniCodeToSession(wxUser.getCode());
         Base64.Decoder decoder = Base64.getDecoder();
         byte[] value = decoder.decode(wxUser.getEncryptedData());
         byte[] key = decoder.decode(response.getSessionKey());

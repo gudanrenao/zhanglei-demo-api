@@ -1,8 +1,6 @@
-package com.zhangwenit.zhanglei.demo.api.dto;
+package com.zhangwenit.zhanglei.demo.api.dto.wechat;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.io.Serializable;
 
 /**
  * @Description
@@ -10,7 +8,7 @@ import java.io.Serializable;
  * @Date 2019/4/29 11:22 PM
  * @Version 1.0
  **/
-public class CodeToSessionResponse extends WeChatBaseResponse implements Serializable {
+public class CodeToSessionResponse extends WeChatBaseResponse {
 
     @JsonProperty("openid")
     private String openId;
