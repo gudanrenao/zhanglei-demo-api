@@ -39,7 +39,6 @@ public class MiniAccessTokenRefreshTask {
     }
 
     private void start() {
-        //为了防止多个实例同一个时间点和间隔执行，错开执行间隔,错开启动执行延迟
         this.task.scheduleWithFixedDelay(this::refresh, 5, REFRESH_SECOND, TimeUnit.SECONDS);
         logger.info("Started MiniAccessToken refresh task");
     }

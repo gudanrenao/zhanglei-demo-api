@@ -12,6 +12,16 @@ public class VoteRequest {
 
     @ApiModelProperty(value = "投票饭店id", example = "1")
     private Long restaurantId;
+    @ApiModelProperty("formId")
+    private String formId;
+
+    public String getFormId() {
+        return formId;
+    }
+
+    public void setFormId(String formId) {
+        this.formId = formId;
+    }
 
     public Long getRestaurantId() {
         return restaurantId;
@@ -19,5 +29,13 @@ public class VoteRequest {
 
     public void setRestaurantId(Long restaurantId) {
         this.restaurantId = restaurantId;
+    }
+
+    @Override
+    public String toString() {
+        return "VoteRequest{" +
+                "restaurantId=" + restaurantId +
+                ", formId='" + formId + '\'' +
+                '}';
     }
 }

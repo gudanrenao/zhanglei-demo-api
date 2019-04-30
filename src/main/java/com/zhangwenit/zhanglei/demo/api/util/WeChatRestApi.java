@@ -3,6 +3,8 @@ package com.zhangwenit.zhanglei.demo.api.util;
 import com.zhangwenit.zhanglei.demo.api.constant.WeChatConstant;
 import com.zhangwenit.zhanglei.demo.api.dto.wechat.CodeToSessionResponse;
 import com.zhangwenit.zhanglei.demo.api.dto.wechat.MiniAccessTokenResponse;
+import com.zhangwenit.zhanglei.demo.api.dto.wechat.TemplateMsgRequest;
+import com.zhangwenit.zhanglei.demo.api.dto.wechat.WeChatBaseResponse;
 import com.zhangwenit.zhanglei.demo.api.exception.CommonException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -55,6 +57,20 @@ public class WeChatRestApi {
         CodeToSessionResponse response = restTemplate.getForObject(WeChatConstant.CODE_2_SESSION_URL, CodeToSessionResponse.class, requestMap);
         if (response == null || response.getErrCode() != 0) {
             throw new CommonException(response != null ? response.getErrCode() + response.getErrMsg() : "miniCodeToSession error");
+        }
+        return response;
+    }
+
+    /**
+     * 发送小程序模板消息
+     *
+     * @param request
+     * @return
+     */
+    public WeChatBaseResponse sendMiniTemplateMsg(TemplateMsgRequest request) {
+        WeChatBaseResponse response = restTemplate.postForObject(WeChatConstant.MINI_SEND_TEMPLATE_URL, request, WeChatBaseResponse.class, request.getAccessToken());
+        if (response == null || response.getErrCode() != 0) {
+            throw new CommonException(response != null ? response.getErrCode() + response.getErrMsg() : "sendMiniTemplateMsg error");
         }
         return response;
     }

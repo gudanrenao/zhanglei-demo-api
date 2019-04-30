@@ -14,7 +14,6 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,10 +29,12 @@ public class RestaurantVoteService {
 
     private final RestaurantVoteRepository restaurantVoteRepository;
     private final RestaurantRepository restaurantRepository;
+    private final TemplateFormService templateFormService;
 
-    public RestaurantVoteService(RestaurantVoteRepository restaurantVoteRepository, RestaurantRepository restaurantRepository) {
+    public RestaurantVoteService(RestaurantVoteRepository restaurantVoteRepository, RestaurantRepository restaurantRepository, TemplateFormService templateFormService) {
         this.restaurantVoteRepository = restaurantVoteRepository;
         this.restaurantRepository = restaurantRepository;
+        this.templateFormService = templateFormService;
     }
 
     /**
@@ -55,7 +56,9 @@ public class RestaurantVoteService {
         restaurantVote.setRestaurant(restaurant);
         restaurantVote.setThirdUserId(user.getId());
         restaurantVote.setVoteDate(today);
-        restaurantVoteRepository.saveAndFlush(restaurantVote);
+        restaurantVoteRepository.save(restaurantVote);
+        //添加formId
+        templateFormService.addForm(user, voteRequest.getFormId());
     }
 
     /**
