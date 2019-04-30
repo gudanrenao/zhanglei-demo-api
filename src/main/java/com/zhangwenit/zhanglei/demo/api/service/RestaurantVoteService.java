@@ -52,7 +52,6 @@ public class RestaurantVoteService {
         Assert.isNull(restaurantVote, "您今日已投过票");
         //添加今日投票
         restaurantVote = new RestaurantVote();
-        restaurantVote.setCreateTime(new Date());
         restaurantVote.setRestaurant(restaurant);
         restaurantVote.setThirdUserId(user.getId());
         restaurantVote.setVoteDate(today);

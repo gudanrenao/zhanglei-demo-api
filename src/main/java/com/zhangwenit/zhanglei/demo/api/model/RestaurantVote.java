@@ -27,7 +27,7 @@ public class RestaurantVote {
      * 投票人id
      */
     private Long thirdUserId;
-
+    @Column(insertable = false)
     private Date createTime;
 
     public Long getId() {

@@ -1,9 +1,6 @@
 package com.zhangwenit.zhanglei.demo.api.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -53,7 +50,7 @@ public class ThirdUser implements Serializable {
      */
     private Date lastLoginTime;
     private String description;
-
+    @Column(insertable = false)
     private Date createTime;
     private Date updateTime;
 
