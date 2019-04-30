@@ -1,6 +1,7 @@
 package com.zhangwenit.zhanglei.demo.api.config;
 
 import com.zhangwenit.zhanglei.demo.api.model.ThirdUser;
+import com.zhangwenit.zhanglei.demo.api.model.User;
 import com.zhangwenit.zhanglei.demo.api.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +48,9 @@ public class MiniLoginInterceptor implements HandlerInterceptor {
         }
         //将token重新做过期时间处理
         redisService.reExpireMiniToken(token);
+        //todo:测试用
+//        User user = new User();
+//        user.setId(1L);
         request.setAttribute("user", user);
         return true;
     }

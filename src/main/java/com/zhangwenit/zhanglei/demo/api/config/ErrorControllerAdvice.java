@@ -23,7 +23,7 @@ public class ErrorControllerAdvice {
     @ExceptionHandler(value = RuntimeException.class)
     public ResponseVO handle(RuntimeException e) {
         logger.error("Handle RuntimeException", e);
-        return new ResponseVO(ResultCode.ERROR);
+        return new ResponseVO(ResultCode.ERROR.getIndex(),e.getMessage());
     }
 
     @ExceptionHandler(value = CommonException.class)

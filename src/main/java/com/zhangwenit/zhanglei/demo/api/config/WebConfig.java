@@ -28,12 +28,12 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(loginInterceptor)
-                .addPathPatterns("/api/**")
+                .addPathPatterns("/**/api/**")
                 //不拦截登录相关接口(需要拦截退出登录和第一次登录修改密码)
-                .excludePathPatterns("/api/login/**")
-                .excludePathPatterns("/api/register/**")
+                .excludePathPatterns("/**/api/login/**")
+                .excludePathPatterns("/**/api/register/**")
                 .excludePathPatterns();
-        registry.addInterceptor(miniLoginInterceptor).addPathPatterns("/api-mini/**").excludePathPatterns();
+        registry.addInterceptor(miniLoginInterceptor).addPathPatterns("/**/api-mini/**").excludePathPatterns();
     }
 
     @Override

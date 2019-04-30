@@ -2,6 +2,7 @@ package com.zhangwenit.zhanglei.demo.api.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 
@@ -14,7 +15,7 @@ import java.io.Serializable;
 public class Restaurant implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     /**
      * 饭店名称
