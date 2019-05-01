@@ -62,6 +62,6 @@ public class LoginController {
     @PostMapping("/loginOut")
     public ResponseVO loginOut(@RequestHeader String token) {
         redisService.delToken(token);
-        return ResponseVO.buildSuccess();
+        return ResponseVO.buildSuccess(true);
     }
 }

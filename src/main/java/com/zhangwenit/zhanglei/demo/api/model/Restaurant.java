@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 饭店表
@@ -29,6 +30,16 @@ public class Restaurant implements Serializable {
      * 饭店状态 1=正常  2=已删除
      */
     private Integer state;
+
+    private Date updateTime;
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public String getPicture() {
         return picture;

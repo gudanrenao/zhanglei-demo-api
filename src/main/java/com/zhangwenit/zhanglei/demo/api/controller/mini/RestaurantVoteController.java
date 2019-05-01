@@ -33,7 +33,7 @@ public class RestaurantVoteController {
     @PostMapping("/api-mini/vote")
     public ResponseVO vote(@ApiIgnore @RequestAttribute ThirdUser user, @RequestHeader String token, @RequestBody VoteRequest voteRequest) {
         restaurantVoteService.vote(user, voteRequest);
-        return ResponseVO.buildSuccess();
+        return ResponseVO.buildSuccess(true);
     }
 
     @ApiOperation(value = "获取今日的投票结果", notes = "获取今日的投票结果")

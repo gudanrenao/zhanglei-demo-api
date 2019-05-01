@@ -2,8 +2,11 @@ package com.zhangwenit.zhanglei.demo.api.service;
 
 import com.zhangwenit.zhanglei.demo.api.constant.StateConstant;
 import com.zhangwenit.zhanglei.demo.api.dto.RestaurantListDto;
+import com.zhangwenit.zhanglei.demo.api.dto.RestaurantSaveRequest;
 import com.zhangwenit.zhanglei.demo.api.dto.criteria.RestaurantCriteria;
+import com.zhangwenit.zhanglei.demo.api.exception.CommonException;
 import com.zhangwenit.zhanglei.demo.api.model.Restaurant;
+import com.zhangwenit.zhanglei.demo.api.model.User;
 import com.zhangwenit.zhanglei.demo.api.repository.RestaurantRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -11,9 +14,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.Predicate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -67,5 +72,72 @@ public class RestaurantService {
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
+    }
+
+    /**
+     * 冻结
+     *
+     * @param user         当前登录账号
+     * @param restaurantId 被冻结账户id
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void freeze(User user, Long restaurantId) {
+        Restaurant restaurant = findById(restaurantId);
+        if (restaurant.getState() != StateConstant.RESTAURANT_STATE_ACTIVE) {
+            throw new CommonException("restaurant state error");
+        }
+        restaurant.setState(StateConstant.RESTAURANT_STATE_FREEZE);
+        restaurantRepository.save(restaurant);
+    }
+
+    /**
+     * 激活
+     *
+     * @param user         当前登录账号
+     * @param restaurantId 被激活账户id
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void active(User user, Long restaurantId) {
+        Restaurant restaurant = findById(restaurantId);
+        if (restaurant.getState() != StateConstant.RESTAURANT_STATE_FREEZE) {
+            throw new CommonException("restaurant state error");
+        }
+        restaurant.setState(StateConstant.RESTAURANT_STATE_ACTIVE);
+        restaurantRepository.save(restaurant);
+    }
+
+    public Restaurant findById(Long restaurantId) {
+        return restaurantRepository.findById(restaurantId).orElseThrow(() -> new CommonException("restaurant not found"));
+    }
+
+    /**
+     * 创建或编辑饭店信息
+     *
+     * @param user
+     * @param request
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void submit(User user, RestaurantSaveRequest request) {
+        Restaurant restaurant = null;
+        if (request.getId() != null) {
+            restaurant = findById(request.getId());
+        } else {
+            restaurant = new Restaurant();
+        }
+        //不为空的属性进行更新操作
+        if (StringUtils.isNotEmpty(request.getName())) {
+            restaurant.setName(request.getName());
+        }
+        if (StringUtils.isNotEmpty(request.getPicture())) {
+            restaurant.setPicture(request.getPicture());
+        }
+        if (request.getState() != null && (request.getState() == StateConstant.RESTAURANT_STATE_ACTIVE || request.getState() == StateConstant.RESTAURANT_STATE_FREEZE)) {
+            restaurant.setState(request.getState());
+        }
+        if(request.getState() == null && restaurant.getState() == null){
+            restaurant.setState(StateConstant.RESTAURANT_STATE_ACTIVE);
+        }
+        restaurant.setUpdateTime(new Date());
+        restaurantRepository.save(restaurant);
     }
 }

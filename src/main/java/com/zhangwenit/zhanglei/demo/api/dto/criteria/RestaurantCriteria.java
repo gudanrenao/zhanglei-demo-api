@@ -3,8 +3,6 @@ package com.zhangwenit.zhanglei.demo.api.dto.criteria;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.Column;
-
 /**
  * @Description
  * @Author ZWen
@@ -14,8 +12,7 @@ import javax.persistence.Column;
 @ApiModel("查询条件")
 public class RestaurantCriteria extends BaseCriteria {
 
-    @ApiModelProperty("饭店名称(模糊查询)")
-    @Column(name = "name")
+    @ApiModelProperty(value = "饭店名称(模糊查询)", example = "面")
     private String restaurantName;
     @ApiModelProperty(value = "饭店状态，1=正常  2=已冻结", example = "1")
     private Integer state;

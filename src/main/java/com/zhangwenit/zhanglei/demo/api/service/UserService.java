@@ -36,7 +36,7 @@ public class UserService {
     }
 
     public User findById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(() -> new CommonException("userId not found"));
+        return userRepository.findById(userId).orElseThrow(() -> new CommonException("user not found"));
     }
 
     /**

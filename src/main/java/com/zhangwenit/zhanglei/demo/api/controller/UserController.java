@@ -44,13 +44,13 @@ public class UserController {
     @PostMapping("/freeze")
     public ResponseVO freeze(@ApiIgnore @RequestAttribute User user, @RequestHeader String token, @ApiParam(value = "待冻结账号id", example = "1") @RequestParam Long userId) {
         userService.freeze(user, userId);
-        return ResponseVO.buildSuccess();
+        return ResponseVO.buildSuccess(true);
     }
 
     @ApiOperation(value = "激活当前账号", notes = "激活当前账号")
     @PostMapping("/active")
     public ResponseVO active(@ApiIgnore @RequestAttribute User user, @RequestHeader String token, @ApiParam(value = "待激活账号id", example = "1") @RequestParam Long userId) {
         userService.active(user, userId);
-        return ResponseVO.buildSuccess();
+        return ResponseVO.buildSuccess(true);
     }
 }
