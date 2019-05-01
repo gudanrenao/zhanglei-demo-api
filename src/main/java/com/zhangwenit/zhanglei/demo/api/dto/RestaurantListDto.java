@@ -13,12 +13,14 @@ import java.io.Serializable;
  **/
 public class RestaurantListDto implements Serializable {
 
-    @ApiModelProperty(value = "id",example = "1")
+    @ApiModelProperty(value = "饭店id",example = "1")
     private Long id;
     @ApiModelProperty("饭店名称")
     private String name;
     @ApiModelProperty("饭店图片")
     private String picture;
+    @ApiModelProperty(value = "饭店状态，1=正常  2=已冻结", example = "1")
+    private Integer state;
 
     private static final long serialVersionUID = 1L;
 
@@ -29,6 +31,7 @@ public class RestaurantListDto implements Serializable {
         this.id = restaurant.getId();
         this.name = restaurant.getName();
         this.picture = restaurant.getPicture();
+        this.state = restaurant.getState();
     }
 
     public Long getId() {
@@ -37,6 +40,14 @@ public class RestaurantListDto implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public String getName() {
@@ -61,6 +72,7 @@ public class RestaurantListDto implements Serializable {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", picture='" + picture + '\'' +
+                ", state=" + state +
                 '}';
     }
 }
