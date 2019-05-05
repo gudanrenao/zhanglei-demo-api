@@ -6,9 +6,9 @@ import com.zhangwenit.zhanglei.demo.api.dto.LoginResponse;
 import com.zhangwenit.zhanglei.demo.api.dto.ResponseVO;
 import com.zhangwenit.zhanglei.demo.api.enums.CommonExceptionEnum;
 import com.zhangwenit.zhanglei.demo.api.exception.CommonException;
-import com.zhangwenit.zhanglei.demo.api.model.User;
+import com.zhangwenit.zhanglei.demo.api.model.PcManageUser;
 import com.zhangwenit.zhanglei.demo.api.service.RedisService;
-import com.zhangwenit.zhanglei.demo.api.service.UserService;
+import com.zhangwenit.zhanglei.demo.api.service.PcManageUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -28,11 +28,11 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "PC端登录相关接口")
 public class LoginController {
 
-    private final UserService userService;
+    private final PcManageUserService pcManageUserService;
     private final RedisService redisService;
 
-    public LoginController(UserService userService, RedisService redisService) {
-        this.userService = userService;
+    public LoginController(PcManageUserService pcManageUserService, RedisService redisService) {
+        this.pcManageUserService = pcManageUserService;
         this.redisService = redisService;
     }
 
@@ -43,7 +43,7 @@ public class LoginController {
         if (StringUtils.isEmpty(loginDto.getUsername()) || StringUtils.isEmpty(loginDto.getPassword())) {
             throw new CommonException(CommonExceptionEnum.NAMNE_OR_PWD_ERROR);
         }
-        User user = userService.findByName(loginDto.getUsername());
+        PcManageUser user = pcManageUserService.findByName(loginDto.getUsername());
         if (user == null) {
             throw new CommonException(CommonExceptionEnum.NAMNE_OR_PWD_ERROR);
         }

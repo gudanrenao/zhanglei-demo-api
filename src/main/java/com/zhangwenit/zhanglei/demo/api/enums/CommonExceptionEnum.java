@@ -16,6 +16,8 @@ public enum CommonExceptionEnum {
     USER_FREEZE(10003,"账户被冻结，无法登陆"),
     NAMNE_OR_PWD_ERROR(10004,"登录名或密码错误"),
     LOGIN_CODE_NULL_ERROR(10005,"code不能为空"),
+    NAME_OR_PWD_NULL(10006,"登录名或密码不能为空"),
+    NAME_ALREADY_EXIST(10007,"用户名已存在"),
 
     SUCCESS(0, "SUCCESS"),
     DATABASE_OPERATION_EXCEPTION(1001, "数据库操作失败"),

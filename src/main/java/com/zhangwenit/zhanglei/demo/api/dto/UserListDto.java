@@ -1,6 +1,6 @@
 package com.zhangwenit.zhanglei.demo.api.dto;
 
-import com.zhangwenit.zhanglei.demo.api.model.User;
+import com.zhangwenit.zhanglei.demo.api.model.PcManageUser;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
@@ -24,7 +24,7 @@ public class UserListDto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public UserListDto(User user) {
+    public UserListDto(PcManageUser user) {
         this.userId = user.getId();
         this.username = user.getName();
         this.type = user.getType();

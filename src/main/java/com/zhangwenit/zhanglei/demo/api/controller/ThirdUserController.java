@@ -2,7 +2,7 @@ package com.zhangwenit.zhanglei.demo.api.controller;
 
 import com.zhangwenit.zhanglei.demo.api.dto.*;
 import com.zhangwenit.zhanglei.demo.api.dto.criteria.ThirdUserCriteria;
-import com.zhangwenit.zhanglei.demo.api.model.User;
+import com.zhangwenit.zhanglei.demo.api.model.PcManageUser;
 import com.zhangwenit.zhanglei.demo.api.service.ThirdUserService;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
@@ -48,14 +48,14 @@ public class ThirdUserController {
 
     @ApiOperation(value = "冻结当前用户", notes = "冻结当前用户")
     @PutMapping("/api/freeze")
-    public ResponseVO freeze(@ApiIgnore @RequestAttribute User user, @RequestHeader String token, @ApiParam(value = "待冻结用户id", example = "1") @RequestParam Long restaurantId) {
+    public ResponseVO freeze(@ApiIgnore @RequestAttribute PcManageUser user, @RequestHeader String token, @ApiParam(value = "待冻结用户id", example = "1") @RequestParam Long restaurantId) {
         thirdUserService.freeze(user, restaurantId);
         return ResponseVO.buildSuccess(true);
     }
 
     @ApiOperation(value = "激活当前用户", notes = "激活当前用户")
     @PutMapping("/api/active")
-    public ResponseVO active(@ApiIgnore @RequestAttribute User user, @RequestHeader String token, @ApiParam(value = "待激活用户id", example = "1") @RequestParam Long restaurantId) {
+    public ResponseVO active(@ApiIgnore @RequestAttribute PcManageUser user, @RequestHeader String token, @ApiParam(value = "待激活用户id", example = "1") @RequestParam Long restaurantId) {
         thirdUserService.active(user, restaurantId);
         return ResponseVO.buildSuccess(true);
     }

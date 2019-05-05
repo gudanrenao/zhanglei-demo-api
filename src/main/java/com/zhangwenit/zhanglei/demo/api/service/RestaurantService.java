@@ -6,7 +6,7 @@ import com.zhangwenit.zhanglei.demo.api.dto.RestaurantSaveRequest;
 import com.zhangwenit.zhanglei.demo.api.dto.criteria.RestaurantCriteria;
 import com.zhangwenit.zhanglei.demo.api.exception.CommonException;
 import com.zhangwenit.zhanglei.demo.api.model.Restaurant;
-import com.zhangwenit.zhanglei.demo.api.model.User;
+import com.zhangwenit.zhanglei.demo.api.model.PcManageUser;
 import com.zhangwenit.zhanglei.demo.api.repository.RestaurantRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
@@ -81,7 +81,7 @@ public class RestaurantService {
      * @param restaurantId 被冻结饭店id
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public void freeze(User user, Long restaurantId) {
+    public void freeze(PcManageUser user, Long restaurantId) {
         Restaurant restaurant = findById(restaurantId);
         if (restaurant.getState() != StateConstant.RESTAURANT_STATE_ACTIVE) {
             throw new CommonException("restaurant state error");
@@ -98,7 +98,7 @@ public class RestaurantService {
      * @param restaurantId 被激活饭店id
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public void active(User user, Long restaurantId) {
+    public void active(PcManageUser user, Long restaurantId) {
         Restaurant restaurant = findById(restaurantId);
         if (restaurant.getState() != StateConstant.RESTAURANT_STATE_FREEZE) {
             throw new CommonException("restaurant state error");
@@ -119,7 +119,7 @@ public class RestaurantService {
      * @param request
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public void submit(User user, RestaurantSaveRequest request) {
+    public void submit(PcManageUser user, RestaurantSaveRequest request) {
         Restaurant restaurant = null;
         if (request.getId() != null) {
             restaurant = findById(request.getId());

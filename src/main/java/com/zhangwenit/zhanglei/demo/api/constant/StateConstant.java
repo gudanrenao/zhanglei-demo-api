@@ -8,6 +8,16 @@ package com.zhangwenit.zhanglei.demo.api.constant;
  **/
 public interface StateConstant {
 
+    ////*********************数据是否被删除**********************
+    /**
+     * 已删除
+     */
+    int ROW_IS_DELETE = 1;
+    /**
+     * 未删除
+     */
+    int ROW_IS_NOT_DELETE = 0;
+
     ////*********************登录用户状态**********************
     /**
      * 冻结

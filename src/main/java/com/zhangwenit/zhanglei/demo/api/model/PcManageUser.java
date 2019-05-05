@@ -8,12 +8,12 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 登录用户
+ * pc后台登录用户
  *
  * @author zhangwen at 2018-08-15 22:52
  **/
-@Entity(name = "zl_user")
-public class User implements Serializable {
+@Entity(name = "zl_pc_manage_user")
+public class PcManageUser implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,10 @@ public class User implements Serializable {
      * 账户状态 1=正常  2=已冻结
      */
     private Integer state;
+    /**
+     * 是否已删除 1=已删除  0=未删除
+     */
+    private Integer isDelete;
     /**
      * 更新时间
      */
@@ -70,6 +74,14 @@ public class User implements Serializable {
         return name;
     }
 
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -84,12 +96,13 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User{" +
+        return "PcManageUser{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 ", type=" + type +
                 ", state=" + state +
+                ", isDelete=" + isDelete +
                 ", updateTime=" + updateTime +
                 '}';
     }

@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.zhangwenit.zhanglei.demo.api.config.RedisConfig;
 import com.zhangwenit.zhanglei.demo.api.constant.WeChatConstant;
 import com.zhangwenit.zhanglei.demo.api.model.ThirdUser;
-import com.zhangwenit.zhanglei.demo.api.model.User;
+import com.zhangwenit.zhanglei.demo.api.model.PcManageUser;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class RedisService {
      * @param user
      * @return head token
      */
-    public String setLoginInfo(User user) {
+    public String setLoginInfo(PcManageUser user) {
         String redisKey = LOGIN_KEY_PREFIX + System.currentTimeMillis();
         redisTemplate.opsForValue().set(redisKey, JSON.toJSONString(user), RedisConfig.LOGIN_EXPIRE_SECOND, TimeUnit.SECONDS);
         return redisKey;
@@ -59,12 +59,12 @@ public class RedisService {
      * @param token
      * @return
      */
-    public User findByToken(final String token) {
+    public PcManageUser findByToken(final String token) {
         String value = redisTemplate.opsForValue().get(token);
         if (StringUtils.isEmpty(value)) {
             return null;
         }
-        return JSON.parseObject(value, User.class);
+        return JSON.parseObject(value, PcManageUser.class);
     }
 
     /**

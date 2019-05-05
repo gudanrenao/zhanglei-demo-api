@@ -12,7 +12,7 @@ import com.zhangwenit.zhanglei.demo.api.dto.wechat.CodeToSessionResponse;
 import com.zhangwenit.zhanglei.demo.api.enums.CommonExceptionEnum;
 import com.zhangwenit.zhanglei.demo.api.exception.CommonException;
 import com.zhangwenit.zhanglei.demo.api.model.ThirdUser;
-import com.zhangwenit.zhanglei.demo.api.model.User;
+import com.zhangwenit.zhanglei.demo.api.model.PcManageUser;
 import com.zhangwenit.zhanglei.demo.api.repository.ThirdUserRepository;
 import com.zhangwenit.zhanglei.demo.api.util.CryptoUtil;
 import com.zhangwenit.zhanglei.demo.api.util.WeChatRestApi;
@@ -166,7 +166,7 @@ public class ThirdUserService {
      * @param thirdUserId 被冻结用户id
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public void freeze(User user, Long thirdUserId) {
+    public void freeze(PcManageUser user, Long thirdUserId) {
         ThirdUser thirdUser = findById(thirdUserId);
         if (thirdUser.getState() != StateConstant.THIRD_USER_STATE_ACTIVE) {
             throw new CommonException("thirdUser state error");
@@ -183,7 +183,7 @@ public class ThirdUserService {
      * @param restaurantId 被激活用户id
      */
     @Transactional(rollbackFor = RuntimeException.class)
-    public void active(User user, Long restaurantId) {
+    public void active(PcManageUser user, Long restaurantId) {
         ThirdUser thirdUser = findById(restaurantId);
         if (thirdUser.getState() != StateConstant.THIRD_USER_STATE_FREEZE) {
             throw new CommonException("restaurant state error");

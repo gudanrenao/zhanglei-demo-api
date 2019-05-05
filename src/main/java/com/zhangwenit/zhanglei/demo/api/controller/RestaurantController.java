@@ -4,7 +4,7 @@ import com.zhangwenit.zhanglei.demo.api.dto.ResponseVO;
 import com.zhangwenit.zhanglei.demo.api.dto.RestaurantListDto;
 import com.zhangwenit.zhanglei.demo.api.dto.RestaurantSaveRequest;
 import com.zhangwenit.zhanglei.demo.api.dto.criteria.RestaurantCriteria;
-import com.zhangwenit.zhanglei.demo.api.model.User;
+import com.zhangwenit.zhanglei.demo.api.model.PcManageUser;
 import com.zhangwenit.zhanglei.demo.api.service.RestaurantService;
 import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
@@ -43,21 +43,21 @@ public class RestaurantController {
 
     @ApiOperation(value = "冻结当前饭店", notes = "冻结当前饭店")
     @PostMapping("/api/freeze")
-    public ResponseVO freeze(@ApiIgnore @RequestAttribute User user, @RequestHeader String token, @ApiParam(value = "待冻结饭店id", example = "1") @RequestParam Long restaurantId) {
+    public ResponseVO freeze(@ApiIgnore @RequestAttribute PcManageUser user, @RequestHeader String token, @ApiParam(value = "待冻结饭店id", example = "1") @RequestParam Long restaurantId) {
         restaurantService.freeze(user, restaurantId);
         return ResponseVO.buildSuccess(true);
     }
 
     @ApiOperation(value = "激活当前饭店", notes = "激活当前饭店")
     @PostMapping("/api/active")
-    public ResponseVO active(@ApiIgnore @RequestAttribute User user, @RequestHeader String token, @ApiParam(value = "待激活饭店id", example = "1") @RequestParam Long restaurantId) {
+    public ResponseVO active(@ApiIgnore @RequestAttribute PcManageUser user, @RequestHeader String token, @ApiParam(value = "待激活饭店id", example = "1") @RequestParam Long restaurantId) {
         restaurantService.active(user, restaurantId);
         return ResponseVO.buildSuccess(true);
     }
 
     @ApiOperation(value = "创建或编辑饭店", notes = "创建或编辑饭店")
     @PostMapping("/api/submit")
-    public ResponseVO active(@ApiIgnore @RequestAttribute User user, @RequestHeader String token, @RequestBody RestaurantSaveRequest saveRequest) {
+    public ResponseVO active(@ApiIgnore @RequestAttribute PcManageUser user, @RequestHeader String token, @RequestBody RestaurantSaveRequest saveRequest) {
         restaurantService.submit(user, saveRequest);
         return ResponseVO.buildSuccess(true);
     }

@@ -1,6 +1,6 @@
 package com.zhangwenit.zhanglei.demo.api.config;
 
-import com.zhangwenit.zhanglei.demo.api.model.User;
+import com.zhangwenit.zhanglei.demo.api.model.PcManageUser;
 import com.zhangwenit.zhanglei.demo.api.service.RedisService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +39,7 @@ public class LoginInterceptor implements HandlerInterceptor {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
-        User user = redisService.findByToken(token);
+        PcManageUser user = redisService.findByToken(token);
         if (user == null) {
             logger.info("token is expired : {}", token);
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
