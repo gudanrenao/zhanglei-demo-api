@@ -78,7 +78,7 @@ public class RestaurantService {
      * 冻结
      *
      * @param user         当前登录账号
-     * @param restaurantId 被冻结账户id
+     * @param restaurantId 被冻结饭店id
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public void freeze(User user, Long restaurantId) {
@@ -95,7 +95,7 @@ public class RestaurantService {
      * 激活
      *
      * @param user         当前登录账号
-     * @param restaurantId 被激活账户id
+     * @param restaurantId 被激活饭店id
      */
     @Transactional(rollbackFor = RuntimeException.class)
     public void active(User user, Long restaurantId) {

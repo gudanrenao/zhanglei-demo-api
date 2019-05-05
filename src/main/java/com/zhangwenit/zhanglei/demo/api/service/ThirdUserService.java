@@ -6,11 +6,13 @@ import com.zhangwenit.zhanglei.demo.api.constant.StateConstant;
 import com.zhangwenit.zhanglei.demo.api.dto.MiniLoginUser;
 import com.zhangwenit.zhanglei.demo.api.dto.ThirdUserDto;
 import com.zhangwenit.zhanglei.demo.api.dto.ThirdUserListDto;
+import com.zhangwenit.zhanglei.demo.api.dto.ThirdUserUpdateRequest;
 import com.zhangwenit.zhanglei.demo.api.dto.criteria.ThirdUserCriteria;
 import com.zhangwenit.zhanglei.demo.api.dto.wechat.CodeToSessionResponse;
 import com.zhangwenit.zhanglei.demo.api.enums.CommonExceptionEnum;
 import com.zhangwenit.zhanglei.demo.api.exception.CommonException;
 import com.zhangwenit.zhanglei.demo.api.model.ThirdUser;
+import com.zhangwenit.zhanglei.demo.api.model.User;
 import com.zhangwenit.zhanglei.demo.api.repository.ThirdUserRepository;
 import com.zhangwenit.zhanglei.demo.api.util.CryptoUtil;
 import com.zhangwenit.zhanglei.demo.api.util.WeChatRestApi;
@@ -121,12 +123,77 @@ public class ThirdUserService {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (StringUtils.isNotEmpty(criteria.getNickname())) {
-                predicates.add(criteriaBuilder.like(root.get("nick_name"), "%" + criteria.getNickname() + "%"));
+                predicates.add(criteriaBuilder.like(root.get("nickName"), "%" + criteria.getNickname() + "%"));
             }
             if (criteria.getState() != null && (criteria.getState() == StateConstant.THIRD_USER_STATE_ACTIVE || criteria.getState() == StateConstant.THIRD_USER_STATE_FREEZE)) {
                 predicates.add(criteriaBuilder.equal(root.get("state"), criteria.getState()));
             }
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param updateRequest
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void update(ThirdUserUpdateRequest updateRequest) {
+        if (updateRequest.getId() == null) {
+            throw new CommonException("id can be not null");
+        }
+        ThirdUser thirdUser = findById(updateRequest.getId());
+        if (StringUtils.isNotEmpty(updateRequest.getDescription())) {
+            thirdUser.setDescription(updateRequest.getDescription());
+        }
+        if (StringUtils.isNotEmpty(updateRequest.getHeadImg())) {
+            thirdUser.setHeadImg(updateRequest.getHeadImg());
+        }
+        if (StringUtils.isNotEmpty(updateRequest.getMobile())) {
+            thirdUser.setMobile(updateRequest.getMobile());
+        }
+        if (StringUtils.isNotEmpty(updateRequest.getName())) {
+            thirdUser.setName(updateRequest.getName());
+        }
+        thirdUser.setUpdateTime(new Date());
+        thirdUserRepository.save(thirdUser);
+    }
+
+    /**
+     * 冻结
+     *
+     * @param user        当前登录账号
+     * @param thirdUserId 被冻结用户id
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void freeze(User user, Long thirdUserId) {
+        ThirdUser thirdUser = findById(thirdUserId);
+        if (thirdUser.getState() != StateConstant.THIRD_USER_STATE_ACTIVE) {
+            throw new CommonException("thirdUser state error");
+        }
+        thirdUser.setState(StateConstant.THIRD_USER_STATE_FREEZE);
+        thirdUser.setUpdateTime(new Date());
+        thirdUserRepository.save(thirdUser);
+    }
+
+    /**
+     * 激活
+     *
+     * @param user         当前登录账号
+     * @param restaurantId 被激活用户id
+     */
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void active(User user, Long restaurantId) {
+        ThirdUser thirdUser = findById(restaurantId);
+        if (thirdUser.getState() != StateConstant.THIRD_USER_STATE_FREEZE) {
+            throw new CommonException("restaurant state error");
+        }
+        thirdUser.setState(StateConstant.THIRD_USER_STATE_ACTIVE);
+        thirdUser.setUpdateTime(new Date());
+        thirdUserRepository.save(thirdUser);
+    }
+
+    public ThirdUser findById(Long thirdUserId) {
+        return thirdUserRepository.findById(thirdUserId).orElseThrow(() -> new CommonException("thirdUser not found"));
     }
 }

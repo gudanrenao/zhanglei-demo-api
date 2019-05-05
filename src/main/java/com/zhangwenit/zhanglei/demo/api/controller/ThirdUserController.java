@@ -1,16 +1,12 @@
 package com.zhangwenit.zhanglei.demo.api.controller;
 
-import com.zhangwenit.zhanglei.demo.api.dto.MiniLoginUser;
-import com.zhangwenit.zhanglei.demo.api.dto.ResponseVO;
-import com.zhangwenit.zhanglei.demo.api.dto.ThirdUserDto;
-import com.zhangwenit.zhanglei.demo.api.dto.ThirdUserListDto;
+import com.zhangwenit.zhanglei.demo.api.dto.*;
 import com.zhangwenit.zhanglei.demo.api.dto.criteria.ThirdUserCriteria;
+import com.zhangwenit.zhanglei.demo.api.model.User;
 import com.zhangwenit.zhanglei.demo.api.service.ThirdUserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @Description
@@ -41,5 +37,26 @@ public class ThirdUserController {
     @PostMapping("/api/list")
     public ResponseVO list(@RequestBody ThirdUserCriteria criteria, @RequestHeader String token) {
         return ResponseVO.buildSuccess(thirdUserService.findByCriteria(criteria));
+    }
+
+    @ApiOperation(value = "更新用户信息", notes = "更新用户信息")
+    @PutMapping("/api/update")
+    public ResponseVO update(@RequestHeader String token, @RequestBody ThirdUserUpdateRequest updateRequest) {
+        thirdUserService.update(updateRequest);
+        return ResponseVO.buildSuccess(true);
+    }
+
+    @ApiOperation(value = "冻结当前用户", notes = "冻结当前用户")
+    @PutMapping("/api/freeze")
+    public ResponseVO freeze(@ApiIgnore @RequestAttribute User user, @RequestHeader String token, @ApiParam(value = "待冻结用户id", example = "1") @RequestParam Long restaurantId) {
+        thirdUserService.freeze(user, restaurantId);
+        return ResponseVO.buildSuccess(true);
+    }
+
+    @ApiOperation(value = "激活当前用户", notes = "激活当前用户")
+    @PutMapping("/api/active")
+    public ResponseVO active(@ApiIgnore @RequestAttribute User user, @RequestHeader String token, @ApiParam(value = "待激活用户id", example = "1") @RequestParam Long restaurantId) {
+        thirdUserService.active(user, restaurantId);
+        return ResponseVO.buildSuccess(true);
     }
 }
