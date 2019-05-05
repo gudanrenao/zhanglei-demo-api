@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 登录用户
@@ -28,6 +29,18 @@ public class User implements Serializable {
      * 账户状态 1=正常  2=已冻结
      */
     private Integer state;
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
+
+    public LocalDateTime getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(LocalDateTime updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public Integer getState() {
         return state;
@@ -77,7 +90,7 @@ public class User implements Serializable {
                 ", password='" + password + '\'' +
                 ", type=" + type +
                 ", state=" + state +
+                ", updateTime=" + updateTime +
                 '}';
     }
-
 }
