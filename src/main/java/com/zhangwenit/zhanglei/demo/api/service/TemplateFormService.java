@@ -35,7 +35,7 @@ public class TemplateFormService {
         }
         TemplateForm templateForm = new TemplateForm();
         templateForm.setFormId(formId);
-        templateForm.setOpenId(user.getOpenId());
+        templateForm.setOpenId(user.getMiniOpenId());
         templateForm.setState(1);
         templateFormRepository.save(templateForm);
     }

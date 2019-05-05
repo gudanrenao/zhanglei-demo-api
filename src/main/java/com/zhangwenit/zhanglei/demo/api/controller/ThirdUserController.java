@@ -1,17 +1,16 @@
-package com.zhangwenit.zhanglei.demo.api.controller.mini;
+package com.zhangwenit.zhanglei.demo.api.controller;
 
 import com.zhangwenit.zhanglei.demo.api.dto.MiniLoginUser;
 import com.zhangwenit.zhanglei.demo.api.dto.ResponseVO;
 import com.zhangwenit.zhanglei.demo.api.dto.ThirdUserDto;
+import com.zhangwenit.zhanglei.demo.api.dto.ThirdUserListDto;
+import com.zhangwenit.zhanglei.demo.api.dto.criteria.ThirdUserCriteria;
 import com.zhangwenit.zhanglei.demo.api.service.ThirdUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Description
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @Version 1.0
  **/
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/thirdUser")
 @Api(tags = "小程序用户相关接口")
 public class ThirdUserController {
 
@@ -35,5 +34,12 @@ public class ThirdUserController {
     @PostMapping("/api-mini/login")
     public ResponseVO loginWx(@RequestBody MiniLoginUser user) throws Exception {
         return ResponseVO.buildSuccess(thirdUserService.login(user));
+    }
+
+    @ApiOperation(value = "分页条件查询用户列表", notes = "分页条件查询用户列表")
+    @ApiResponses(@ApiResponse(code = 0, message = "", response = ThirdUserListDto.class))
+    @PostMapping("/api/list")
+    public ResponseVO list(@RequestBody ThirdUserCriteria criteria, @RequestHeader String token) {
+        return ResponseVO.buildSuccess(thirdUserService.findByCriteria(criteria));
     }
 }

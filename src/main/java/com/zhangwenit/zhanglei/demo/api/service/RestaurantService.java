@@ -87,6 +87,7 @@ public class RestaurantService {
             throw new CommonException("restaurant state error");
         }
         restaurant.setState(StateConstant.RESTAURANT_STATE_FREEZE);
+        restaurant.setUpdateTime(new Date());
         restaurantRepository.save(restaurant);
     }
 
@@ -103,6 +104,7 @@ public class RestaurantService {
             throw new CommonException("restaurant state error");
         }
         restaurant.setState(StateConstant.RESTAURANT_STATE_ACTIVE);
+        restaurant.setUpdateTime(new Date());
         restaurantRepository.save(restaurant);
     }
 

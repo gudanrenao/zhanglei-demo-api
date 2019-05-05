@@ -110,9 +110,26 @@ public class RedisService {
     }
 
     /**
+     * 保存PublicAccessToken,并设置两个小时的过期时间
+     *
+     * @param accessToken
+     */
+    public void setAndExpirePublicAccessToken(String accessToken) {
+        redisTemplate.opsForValue().set(WeChatConstant.PUBLIC_ACCESS_TOKEN_REDIS_KEY, accessToken);
+        redisTemplate.expire(WeChatConstant.PUBLIC_ACCESS_TOKEN_REDIS_KEY, WeChatConstant.PUBLIC_ACCESS_TOKEN_REDIS_EXPIRE_SECOND, TimeUnit.SECONDS);
+    }
+
+    /**
      * 获取MiniAccessToken
      */
     public String getMiniAccessToken() {
         return redisTemplate.opsForValue().get(WeChatConstant.MINI_ACCESS_TOKEN_REDIS_KEY);
+    }
+
+    /**
+     * 获取PublicAccessToken
+     */
+    public String getPublicAccessToken() {
+        return redisTemplate.opsForValue().get(WeChatConstant.PUBLIC_ACCESS_TOKEN_REDIS_KEY);
     }
 }

@@ -43,9 +43,9 @@ public interface StateConstant {
     /**
      * 删除
      */
-    int THIRD_USER_STATUS_FREEZE = 2;
+    int THIRD_USER_STATE_FREEZE = 2;
     /**
      * 正常
      */
-    int THIRD_USER_STATUS_ACTIVE = 1;
+    int THIRD_USER_STATE_ACTIVE = 1;
 }

@@ -9,11 +9,14 @@ package com.zhangwenit.zhanglei.demo.api.constant;
 public interface WeChatConstant {
 
     String MINI_ACCESS_TOKEN_REDIS_KEY = "mini:accessToken";
+    String PUBLIC_ACCESS_TOKEN_REDIS_KEY = "public:accessToken";
     int MINI_ACCESS_TOKEN_REDIS_EXPIRE_SECOND = 120 * 60;
+    int PUBLIC_ACCESS_TOKEN_REDIS_EXPIRE_SECOND = 120 * 60;
 
     String URL_PREFIX = "https://api.weixin.qq.com/";
 
     String CODE_2_SESSION_URL = URL_PREFIX + "sns/jscode2sessio?grant_type=authorization_code&appid={appId}&secret={secret}&js_code={code}";
     String MINI_ACCESS_TOKEN_URL = URL_PREFIX + "cgi-bin/token?grant_type=client_credential&appid={appId}&secret={secret}";
+    String PUBLIC_ACCESS_TOKEN_URL = URL_PREFIX + "cgi-bin/token?grant_type=client_credential&appid={appId}&secret={secret}";
     String MINI_SEND_TEMPLATE_URL = URL_PREFIX + "cgi-bin/message/wxopen/template/send?access_token={accessToken}";
 }

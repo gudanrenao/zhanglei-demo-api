@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.zhangwenit.zhanglei.demo.api.constant.StateConstant;
 import com.zhangwenit.zhanglei.demo.api.dto.MiniLoginUser;
 import com.zhangwenit.zhanglei.demo.api.dto.ThirdUserDto;
+import com.zhangwenit.zhanglei.demo.api.dto.ThirdUserListDto;
+import com.zhangwenit.zhanglei.demo.api.dto.criteria.ThirdUserCriteria;
 import com.zhangwenit.zhanglei.demo.api.dto.wechat.CodeToSessionResponse;
 import com.zhangwenit.zhanglei.demo.api.enums.CommonExceptionEnum;
 import com.zhangwenit.zhanglei.demo.api.exception.CommonException;
@@ -14,12 +16,19 @@ import com.zhangwenit.zhanglei.demo.api.util.CryptoUtil;
 import com.zhangwenit.zhanglei.demo.api.util.WeChatRestApi;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description
@@ -62,20 +71,28 @@ public class ThirdUserService {
         String wxInfo = CryptoUtil.decrypt(value, key, iv, "utf-8");
         if (StringUtils.isNotEmpty(wxInfo)) {
             JSONObject jsonObject = JSON.parseObject(wxInfo);
+            String unionId = jsonObject.getString("unionId");
             String nickName = jsonObject.getString("nickName");
             String province = jsonObject.getString("province");
             String city = jsonObject.getString("city");
-            //查询该微信openId是否已注册
-            ThirdUser thirdUser = thirdUserRepository.findByOpenId(response.getOpenId());
-            if (null == thirdUser) {
-                thirdUser = new ThirdUser();
-                thirdUser.setStatus(StateConstant.THIRD_USER_STATUS_ACTIVE);
-                thirdUser.setOpenId(response.getOpenId());
-                thirdUser.setCreateTime(new Date());
-                thirdUser.setNickName(nickName);
-                thirdUser.setProvinceName(province);
-                thirdUser.setCityName(city);
+            if (StringUtils.isEmpty(unionId)) {
+                throw new CommonException("unionId can be not null");
             }
+            //查询该微信openId是否已注册
+            ThirdUser thirdUser = thirdUserRepository.findByUnionId(unionId);
+            if (null == thirdUser) {
+                thirdUser = thirdUserRepository.findByMiniOpenId(response.getOpenId());
+                if (thirdUser == null) {
+                    thirdUser = new ThirdUser();
+                    thirdUser.setState(StateConstant.THIRD_USER_STATE_ACTIVE);
+                    thirdUser.setCreateTime(new Date());
+                    thirdUser.setNickName(nickName);
+                    thirdUser.setProvinceName(province);
+                    thirdUser.setCityName(city);
+                }
+                thirdUser.setUnionId(unionId);
+            }
+            thirdUser.setMiniOpenId(response.getOpenId());
             thirdUser.setLastLoginTime(new Date());
             thirdUser.setUpdateTime(new Date());
             thirdUser = thirdUserRepository.save(thirdUser);
@@ -85,5 +102,31 @@ public class ThirdUserService {
         } else {
             throw new CommonException("userInfo is null");
         }
+    }
+
+    /**
+     * 分页条件查询
+     *
+     * @param criteria
+     * @return
+     */
+    public Page<ThirdUserListDto> findByCriteria(ThirdUserCriteria criteria) {
+        criteria.check();
+        PageRequest pageRequest = PageRequest.of(criteria.getCurrPage() - 1, criteria.getPageSize(), Sort.by(Sort.Direction.DESC, "id"));
+        Page<ThirdUser> page = thirdUserRepository.findAll(criteriaBuilder(criteria), pageRequest);
+        return page.map(ThirdUserListDto::new);
+    }
+
+    private Specification<ThirdUser> criteriaBuilder(final ThirdUserCriteria criteria) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (StringUtils.isNotEmpty(criteria.getNickname())) {
+                predicates.add(criteriaBuilder.like(root.get("nick_name"), "%" + criteria.getNickname() + "%"));
+            }
+            if (criteria.getState() != null && (criteria.getState() == StateConstant.THIRD_USER_STATE_ACTIVE || criteria.getState() == StateConstant.THIRD_USER_STATE_FREEZE)) {
+                predicates.add(criteriaBuilder.equal(root.get("state"), criteria.getState()));
+            }
+            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+        };
     }
 }

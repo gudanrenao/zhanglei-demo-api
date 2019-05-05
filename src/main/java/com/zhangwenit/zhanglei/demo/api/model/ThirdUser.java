@@ -36,7 +36,7 @@ public class ThirdUser implements Serializable {
     /**
      * 状态 1、正常；2、注销
      */
-    private Integer status;
+    private Integer state;
     /**
      * 用户手机号
      */
@@ -44,7 +44,15 @@ public class ThirdUser implements Serializable {
     /**
      * 小程序openId
      */
-    private String openId;
+    private String miniOpenId;
+    /**
+     * 公众号openId
+     */
+    private String publicOpenId;
+    /**
+     * 开放平台unionId
+     */
+    private String unionId;
     /**
      * 最后一次登录时间
      */
@@ -102,12 +110,12 @@ public class ThirdUser implements Serializable {
         this.cityName = cityName;
     }
 
-    public Integer getStatus() {
-        return status;
+    public Integer getState() {
+        return state;
     }
 
-    public void setStatus(Integer status) {
-        this.status = status;
+    public void setState(Integer state) {
+        this.state = state;
     }
 
     public String getMobile() {
@@ -118,12 +126,28 @@ public class ThirdUser implements Serializable {
         this.mobile = mobile;
     }
 
-    public String getOpenId() {
-        return openId;
+    public String getMiniOpenId() {
+        return miniOpenId;
     }
 
-    public void setOpenId(String openId) {
-        this.openId = openId;
+    public void setMiniOpenId(String miniOpenId) {
+        this.miniOpenId = miniOpenId;
+    }
+
+    public String getPublicOpenId() {
+        return publicOpenId;
+    }
+
+    public void setPublicOpenId(String publicOpenId) {
+        this.publicOpenId = publicOpenId;
+    }
+
+    public String getUnionId() {
+        return unionId;
+    }
+
+    public void setUnionId(String unionId) {
+        this.unionId = unionId;
     }
 
     public Date getLastLoginTime() {
@@ -161,15 +185,17 @@ public class ThirdUser implements Serializable {
     @Override
     public String toString() {
         return "ThirdUser{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", nickName='" + nickName + '\'' +
                 ", name='" + name + '\'' +
                 ", headImg='" + headImg + '\'' +
                 ", provinceName='" + provinceName + '\'' +
                 ", cityName='" + cityName + '\'' +
-                ", status=" + status +
+                ", state=" + state +
                 ", mobile='" + mobile + '\'' +
-                ", openId='" + openId + '\'' +
+                ", miniOpenId='" + miniOpenId + '\'' +
+                ", publicOpenId='" + publicOpenId + '\'' +
+                ", unionId='" + unionId + '\'' +
                 ", lastLoginTime=" + lastLoginTime +
                 ", description='" + description + '\'' +
                 ", createTime=" + createTime +

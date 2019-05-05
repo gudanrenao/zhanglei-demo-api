@@ -37,7 +37,7 @@ public class ThirdUserDto implements Serializable {
         this.name = user.getName();
         this.headImg = user.getHeadImg();
         this.mobile = user.getMobile();
-        this.openId = user.getOpenId();
+        this.openId = user.getMiniOpenId();
         this.description = user.getDescription();
     }
 

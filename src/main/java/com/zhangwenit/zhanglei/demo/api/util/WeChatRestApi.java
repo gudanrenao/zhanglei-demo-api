@@ -1,10 +1,7 @@
 package com.zhangwenit.zhanglei.demo.api.util;
 
 import com.zhangwenit.zhanglei.demo.api.constant.WeChatConstant;
-import com.zhangwenit.zhanglei.demo.api.dto.wechat.CodeToSessionResponse;
-import com.zhangwenit.zhanglei.demo.api.dto.wechat.MiniAccessTokenResponse;
-import com.zhangwenit.zhanglei.demo.api.dto.wechat.TemplateMsgRequest;
-import com.zhangwenit.zhanglei.demo.api.dto.wechat.WeChatBaseResponse;
+import com.zhangwenit.zhanglei.demo.api.dto.wechat.*;
 import com.zhangwenit.zhanglei.demo.api.exception.CommonException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -42,6 +39,19 @@ public class WeChatRestApi {
         MiniAccessTokenResponse response = restTemplate.getForObject(WeChatConstant.MINI_ACCESS_TOKEN_URL, MiniAccessTokenResponse.class, commonParams());
         if (response == null || response.getErrCode() != 0) {
             throw new CommonException(response != null ? response.getErrCode() + response.getErrMsg() : "getMiniAccessToken error");
+        }
+        return response;
+    }
+
+    /**
+     * 获取公众号全局唯一后台接口调用凭据（access_token）
+     *
+     * @return
+     */
+    public PublicAccessTokenResponse getPublicAccessToken() {
+        PublicAccessTokenResponse response = restTemplate.getForObject(WeChatConstant.PUBLIC_ACCESS_TOKEN_URL, PublicAccessTokenResponse.class, commonParams());
+        if (response == null || response.getErrCode() != 0) {
+            throw new CommonException(response != null ? response.getErrCode() + response.getErrMsg() : "getPublicAccessToken error");
         }
         return response;
     }
