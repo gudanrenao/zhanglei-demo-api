@@ -29,6 +29,6 @@ public class ErrorControllerAdvice {
     @ExceptionHandler(value = CommonException.class)
     public ResponseVO handle(CommonException e) {
         logger.error("Handle CommonException", e);
-        return ResponseVO.buildError(e.getResultCode(), e.getMessage());
+        return ResponseVO.buildError(e.getResultCode(), e.getMsg());
     }
 }
