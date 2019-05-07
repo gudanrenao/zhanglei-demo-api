@@ -1,5 +1,6 @@
 package com.zhangwenit.zhanglei.demo.api.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
@@ -10,11 +11,12 @@ import java.io.Serializable;
  * @Date 2019/4/26 7:56 AM
  * @Version 1.0
  **/
+@ApiModel(description = "账户信息")
 public class LoginResponse implements Serializable {
 
     @ApiModelProperty("登录账号名称")
     private String username;
-    @ApiModelProperty(value = "账户类型 1=超级管理员  2=普通用户",dataType = "int",example = "1")
+    @ApiModelProperty(value = "账户类型 1=超级管理员  2=普通用户", dataType = "int", example = "1")
     private Integer type;
     @ApiModelProperty("token,需要登录后的其他请求放在head中，key为token")
     private String token;

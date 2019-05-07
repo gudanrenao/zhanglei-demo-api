@@ -1,4 +1,4 @@
-package com.zhangwenit.zhanglei.demo.api.controller.mini;
+package com.zhangwenit.zhanglei.demo.api.controller;
 
 import com.zhangwenit.zhanglei.demo.api.dto.ResponseVO;
 import com.zhangwenit.zhanglei.demo.api.dto.RestaurantVoteResultDto;

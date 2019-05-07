@@ -1,6 +1,7 @@
 package com.zhangwenit.zhanglei.demo.api.dto;
 
 import com.zhangwenit.zhanglei.demo.api.enums.ResultCode;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
@@ -11,11 +12,12 @@ import java.io.Serializable;
  * @Date 2018/11/6 5:40 PM
  * @Version 1.0
  **/
+@ApiModel(description = "响应头")
 public class ResponseHeader implements Serializable {
 
-    @ApiModelProperty(value = "错误码",example = "10001")
+    @ApiModelProperty(value = "错误码", example = "10001")
     private int errCode;
-
+    @ApiModelProperty("错误描述")
     private String errMsg;
 
     public ResponseHeader() {

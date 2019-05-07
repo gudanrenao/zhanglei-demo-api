@@ -39,7 +39,7 @@ public class LoginController {
     @ApiOperation(value = "登录", notes = "登录")
     @ApiResponses(@ApiResponse(code = 0, message = "", response = LoginResponse.class))
     @PostMapping("/loginIn")
-    public ResponseVO loginIn(@RequestBody LoginDto loginDto) {
+    public ResponseVO<LoginResponse> loginIn(@RequestBody LoginDto loginDto) {
         if (StringUtils.isEmpty(loginDto.getUsername()) || StringUtils.isEmpty(loginDto.getPassword())) {
             throw new CommonException(CommonExceptionEnum.NAMNE_OR_PWD_ERROR);
         }

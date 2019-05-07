@@ -5,6 +5,7 @@ import com.zhangwenit.zhanglei.demo.api.dto.criteria.ThirdUserCriteria;
 import com.zhangwenit.zhanglei.demo.api.model.PcManageUser;
 import com.zhangwenit.zhanglei.demo.api.service.ThirdUserService;
 import io.swagger.annotations.*;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -35,7 +36,7 @@ public class ThirdUserController {
     @ApiOperation(value = "分页条件查询用户列表", notes = "分页条件查询用户列表")
     @ApiResponses(@ApiResponse(code = 0, message = "", response = ThirdUserListDto.class))
     @PostMapping("/api/list")
-    public ResponseVO list(@RequestBody ThirdUserCriteria criteria, @RequestHeader String token) {
+    public ResponseVO<Page<ThirdUserListDto>> list(@RequestBody ThirdUserCriteria criteria, @RequestHeader String token) {
         return ResponseVO.buildSuccess(thirdUserService.findByCriteria(criteria));
     }
 

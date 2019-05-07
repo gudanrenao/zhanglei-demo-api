@@ -1,6 +1,8 @@
 package com.zhangwenit.zhanglei.demo.api.dto;
 
 import com.zhangwenit.zhanglei.demo.api.enums.ResultCode;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
 
@@ -11,11 +13,13 @@ import java.io.Serializable;
  * @Date 2018/11/1 4:55 PM
  * @Version 1.0
  **/
-public class ResponseVO implements Serializable {
+@ApiModel(description = "响应对象")
+public class ResponseVO<T> implements Serializable {
 
+    @ApiModelProperty("响应头(错误码和错误原因)")
     private ResponseHeader head;
-
-    private Object data;
+    @ApiModelProperty("响应数据")
+    private T data;
 
     public ResponseVO() {
         this.head = new ResponseHeader(0, "");
@@ -29,12 +33,12 @@ public class ResponseVO implements Serializable {
         this.head = new ResponseHeader(errCode, errMsg);
     }
 
-    public ResponseVO(ResultCode resultCode, Object data) {
+    public ResponseVO(ResultCode resultCode, T data) {
         this.head = new ResponseHeader(resultCode);
         this.data = data;
     }
 
-    public ResponseVO(Object data, Integer errCode, String errMsg) {
+    public ResponseVO(T data, Integer errCode, String errMsg) {
         this.head = new ResponseHeader(errCode, errMsg);
         this.data = data;
     }
@@ -55,23 +59,22 @@ public class ResponseVO implements Serializable {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(T data) {
         this.data = data;
     }
 
-    public static ResponseVO buildSuccess() {
-        return new ResponseVO(ResultCode.SUCCESS);
+    public static <T> ResponseVO<T> buildSuccess() {
+        return new ResponseVO<>(ResultCode.SUCCESS);
     }
 
-    public static ResponseVO buildSuccess(Object data) {
-        ResponseVO responseVO = buildSuccess();
+    public static <T> ResponseVO<T> buildSuccess(T data) {
+        ResponseVO<T> responseVO = buildSuccess();
         responseVO.setData(data);
         return responseVO;
     }
 
     public static ResponseVO buildError(int errCode, String errMsg) {
-        ResponseVO responseVO = new ResponseVO(errCode, errMsg);
-        return responseVO;
+        return new ResponseVO(errCode, errMsg);
     }
 
     @Override
