@@ -37,7 +37,7 @@ public class RestaurantController {
     @ApiOperation(value = "分页条件查询饭店列表", notes = "分页条件查询饭店列表")
     @ApiResponses(@ApiResponse(code = 0, message = "", response = RestaurantListDto.class))
     @PostMapping("/api/list")
-    public ResponseVO list(@RequestBody RestaurantCriteria criteria, @RequestHeader String token) {
+    public ResponseVO list(@ApiParam("饭店查询条件") @RequestBody RestaurantCriteria criteria, @RequestHeader String token) {
         return ResponseVO.buildSuccess(restaurantService.findByCriteria(criteria));
     }
 

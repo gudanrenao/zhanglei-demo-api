@@ -9,7 +9,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @Date 2019/5/1 8:53 AM
  * @Version 1.0
  **/
-@ApiModel("查询条件")
+@ApiModel
 public class RestaurantCriteria extends BaseCriteria {
 
     @ApiModelProperty(value = "饭店名称(模糊查询)", example = "面")
