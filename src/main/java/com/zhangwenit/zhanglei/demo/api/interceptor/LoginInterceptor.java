@@ -1,4 +1,4 @@
-package com.zhangwenit.zhanglei.demo.api.config;
+package com.zhangwenit.zhanglei.demo.api.interceptor;
 
 import com.zhangwenit.zhanglei.demo.api.model.PcManageUser;
 import com.zhangwenit.zhanglei.demo.api.service.RedisService;

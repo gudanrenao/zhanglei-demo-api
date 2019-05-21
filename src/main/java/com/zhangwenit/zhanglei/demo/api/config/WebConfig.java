@@ -1,20 +1,24 @@
 package com.zhangwenit.zhanglei.demo.api.config;
 
+import com.zhangwenit.zhanglei.demo.api.interceptor.LoginInterceptor;
+import com.zhangwenit.zhanglei.demo.api.interceptor.MiniLoginInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.core.annotation.Order;
-import org.springframework.web.servlet.config.annotation.*;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
  * @ClassName WebConfig
- * @Description web interceptor
- * @Author XuQiuliang
- * @Date 2018/11/5 4:20 PM
+ * @Description web interceptor and CORS
+ * @Author zw
+ * @Date 2019/5/6 4:20 PM
  * @Version 1.0
  **/
 @Configuration
-@EnableWebMvc
 @Order(1)
 public class WebConfig implements WebMvcConfigurer {
 
