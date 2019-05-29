@@ -55,7 +55,7 @@ public class ResponseVO<T> implements Serializable {
         return this.head;
     }
 
-    public Object getData() {
+    public T getData() {
         return data;
     }
 
